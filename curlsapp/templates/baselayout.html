@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base Layout</title>
+    <!-- Bootsrtap CSS-->
+    <link href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" >
+    <!-- External CSS -->
+    <link href="{{url_for('static', filename='css/index.css')}}" rel="stylesheet" type="text/css">
+    <!-- fontawesome -->
+	<link href="{{url_for('static', filename='fontawesome/css/all.css')}}" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        .baserow,.basecol{
+           border:1px solid red;
+           min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row baserow">
+            {% block navigation %}
+            <div class="col basecol">Navigation Top</div>
+            {% endblock %}
+        </div>
+        <div class="row baserow">
+            {% block menu %}
+            <div class="col basecol">Menu Bar</div>
+            {% endblock menu %}
+        </div>
+        <div class="row baserow">
+            {% block banner %}
+            <div class="col basecol">Banner/ Ads</div>
+            {% endblock %}
+        </div>
+        <div class="row baserow">
+            {% block content %}
+            <div class="col basecol">Content</div>
+            <div class="col basecol">Content</div>
+            {% endblock %}
+        </div>
+        <div class="row baserow">
+            {% block footer %}
+            <div class="col basecol">Footer</div>
+            {% endblock %}
+        </div>
+    </div>
+
+<!-- JS Files-->
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.js')}}" type="text/javascript"></script>
+<!-- jQuery file -->
+<script src="{{url_for('static',filename='js/jquery.min.js')}}" type="text/javascript"></script>
+<!--External js-->
+<script src="{{url_for('static',filename='js/index.js')}}" type="text/javascript" language="javascript"></script>
+</body>
+</html>

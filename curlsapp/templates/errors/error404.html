@@ -1,0 +1,19 @@
+{% include "header.html" %}
+
+<div class="row mb-3">
+    <div class="col d-flex align-items-center ">
+        <div class="px-4">
+            <h2 class="p-2">Whoops! no result found.</h2>
+            <p class="p-2">We didn't find anything at this location.</p>
+            <p class="px-2">Perhaps try our 
+                <span id="return_home"><a href="{{url_for('homepage')}}">Homepage</a></span>
+            </p>
+        </div>
+        
+        
+    </div>
+    <div class="col">
+        <img src="{{url_for('static',filename='images/error404.png')}}" style="height:400px; width:500px">
+    </div>
+</div>
+{% include "footer.html" %}

@@ -1,0 +1,157 @@
+/* External css for homepage */
+*{
+    box-sizing: border-box;
+}
+div{
+    border:0px solid tomato
+}
+.col{
+    min-height:0px
+}
+.nav-link{
+    text-decoration:none;
+    color:#172B3A;
+}
+.nav-link:hover{
+  color:#efca08;
+  /* color:#99feff; */
+}
+.carousel-item{
+  height:500px;
+}
+/* .carousel-item img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+} */
+.menubar{
+  background-color: #b983ff;
+}
+body{
+  /* background-color: rgba(153, 254, 255,0.2); */
+  background-color: white;
+}
+.logo{
+  width:50%
+}
+.footer_headings{
+  text-align: center;
+}
+#newsletter{
+  /* background-color: rgba(23, 43, 58,1); */
+  background-color: #28262c;
+  /* color:white; */
+  color:#E2CCFF;
+  /* color:black; */
+}
+#pre-footer,#footer{
+  background-color: rgba(40, 38, 44,0.9);
+  /* color:rgb(226, 204, 255); */
+  color:white;
+}
+
+/* Registration form CSS */
+.welcome{
+    border:0px solid green;
+}
+.rowspace{
+    margin-bottom: 0.625em;
+    padding-left: 0.625em;
+}
+.inputedit{
+    padding-left:5px;
+}
+.bannerinfo{
+    border:2px solid black;
+    background-color: rgba(148, 179, 255,0.6) ;
+}
+
+/* error404 styling */
+#return_home{
+    border:1px solid #172B3A;
+    border-radius: 10px;
+    padding:5px;
+    background-color: #99feff;
+}
+#return_home:hover{
+    border-radius:20px;
+    background-color: aliceblue;
+    color:#b983ff
+}
+#return_home a{
+    text-decoration: none;
+    color:black;
+}
+
+/* CARD IMAGES */
+.img_wrapper{
+  width:100%;
+  height: 230px;
+}
+.img_wrapper img{
+  width:100%;
+  height:100%;
+}
+
+/* Salon page services styles css */
+.style_media{
+  height:300px;
+  width:100%;
+}
+.style_media video{
+  height:300px;
+  width:100%;
+}
+/* Product page css */
+.product-img{
+  width:100%;
+  height:350px;
+}
+.product-img img{
+  width:100%;
+  height:100%;
+}
+
+/* Cart Table CSS */
+#cartTable table td{
+  vertical-align: middle;
+}
+/* .quantity #cartqty{
+  height:20px;
+  width:60px;
+} */
+.quantity{
+ display:flex;
+ justify-content: space-evenly;
+  
+  
+}
+#qtyitem{
+  border:1px solid grey;
+  width:50px;
+  
+}
+
+/* cartitem counter on homepage */
+#cart-container{
+  position: relative;
+  display:inline-block;
+  /* border: 1px solid black; */
+}
+#cart-container i{
+  font-size: x-large;
+}
+
+#cartitem_count{
+  /* background-color: red; */
+  color:white;
+  position:absolute;
+  border-radius: 50%;
+  top: 0px;
+  left: 0px;
+  right:-1px;
+  font-size: 12px;
+  text-align: center;
+  line-height: 10px;
+
+}

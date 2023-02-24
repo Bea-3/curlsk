@@ -1,0 +1,46 @@
+{% extends "vendor/ven_dashboard.html" %}
+{% block content %}
+<a href="{{url_for('ven_services')}}" class="btn"><i class="fa-solid fa-arrow-left-long text-dark pe-2"></i>Back</a>
+<div class="row p-3">
+    <h4>Services</h4>
+    <form class="row g-3" action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+        {% with m=get_flashed_messages() %}
+            {% if m %}
+        {% for msg in m%}
+        <div class="alert alert-success">{{ msg }}</div>
+         {% endfor %}
+            {% endif %}
+            {% endwith %}
+        <div class="col-md-6">
+            <label for="style_name" class="form-label">Style Name</label>
+            <select name="style_name" class="form-select">
+                <option value="">Select style</option>
+                {%for s in data%}
+                <option value="{{s.style_id}}">{{s.style_name}}</option>
+                {%endfor%}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="style_amt" class="form-label">Style Amount</label>
+            <input type="number" name="style_amt" class="form-control" id="style_amt">
+        </div>
+        <div class="col-md-6">
+            <label for="style_img" class="form-label">Image</label>
+            <input type="file" name="style_img" class="form-control" id="style_img">
+        </div>
+        <div class="col-md-6">
+            <label for="style_vid" class="form-label">Video</label>
+            <input type="file" name="style_vid" class="form-control" id="style_vid">
+        </div>
+        
+        <div class="col-12">
+            <label for="style_desc" class="form-label">Description/Special notes</label>
+            <textarea class="form-control" name="style_desc" id="style_desc" style="height:20vh" placeholder="Type here..."></textarea>
+        </div>
+        <div class="col-12 text-end">
+          <button type="submit" class="btn btn-warning">Add Style</button>
+        </div>
+      </form>
+</div>
+{% endblock %}

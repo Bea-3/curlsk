@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Page</title>
+    <!-- Bootsrtap CSS-->
+    <link href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" >
+    <!-- External CSS -->
+    <link href="{{url_for('static', filename='css/index.css')}}" rel="stylesheet" type="text/css">
+    <!-- fontawesome -->
+	<link href="{{url_for('static', filename='fontawesome/css/all.css')}}" rel="stylesheet" type="text/css">
+    <style type="text/css">
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col ">
+                <nav class="navbar navbar-expand-lg" id="navbar">
+                    <div class="container-fluid">
+                        <div class="col-md-3">
+                            <a class="navbar-brand " href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/imgre.png')}}" width="150" height="80"></a>
+                        </div>
+                        <div class="col-md-6 text-end">
+                           <a class="nav-link"  href="{{url_for('ven_login')}}">Have an Account? <i class="fa-solid fa-shop"></i>Login</a>
+                        </div>
+                  </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="container col-xl-10 col-xxl-8 px-4 py-2">
+                <div class="row align-items-center g-lg-5 py-2">
+                  <div class="col-lg-7 text-center text-lg-start">
+                    <h1 class="display-4 fw-bold lh-1 mb-3">Salon Owner?</h1>
+                    <p class="col-lg-10 fs-4">
+                        Gain more customers by using this platform. Register now on curls Korner 
+                    </p>
+                  </div>
+                  <!--Registration Form-->
+                  
+                  <div class="col-md-10 mx-auto col-lg-5">
+                    <form class="p-4 p-md-3 border rounded-3 bg-light mb-2" action="{{url_for('ven_register')}}" method="post">
+                      {%with c=get_flashed_messages()%}
+                            {% for msg in c%}
+                               <p class="alert alert-danger"> {{msg}}</p>
+                            {% endfor %}
+                        {% endwith %}
+                      <div class="form-floating mb-2">
+                        <input type="text" name="ven_name" class="form-control" id="ven_name" placeholder="Business Name">
+                        <label for="ven_name" class="form-label">Business Name</label>
+                      </div>
+                      <div class="form-floating mb-2">
+                        <input type="email" name="ven_email" class="form-control" id="ven_email" placeholder="Business Email">
+                        <label for="ven_email" class="form-label">Business Email</label>
+                      </div>
+                      <div class="form-floating mb-2">
+                        <input type="password" name="ven_pwd" id="ven_pwd" class="form-control" placeholder="Password">
+                        <label for="password" class="form-label">Password</label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        <input type="password" name="confirmpwd" id="confirmpwd" class="form-control" placeholder="confirm password">
+                        <label for="confirmpwd" class="form-label">Confirm your password</label>
+                      </div>
+                      <button class="btn btn-warning w-100" type="submit">Register</button>
+                      <hr class="my-4">
+                      <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+                    </form>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="row">
+            <div class="col basecol">
+                <div class="row align-items-center" id="newsletter">
+                    <div class="col-3">
+                      <a  href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/12t.png')}}" class="logo"></a>
+                    </div>
+                    <div class="col-md-4"><h6>Join Our Mailing List</h6>
+                      <p>Subscribe now and be the first to know about latest salons, product updates, exciting news and announcements.</p>
+                    </div>
+                    <div class="col-md-5 ">
+                      <form class="row row-cols-lg-auto g-3 align-items-center">
+                        <label  class="col-form-label" for="subscribe">Email</label>
+                        <div class="col-12">
+                          <input type="email" class="form-control" name="subscribe" id="subscribe" placeholder="email@example.com">
+                        </div>
+                        <div class="col-12">
+                          <button class="btn btn-outline-secondary">Subscribe</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                        <!--Pre Footer with Site Links-->
+                        <div class="row" id="pre-footer">
+                            <div class="col mt-3">
+                              <h5 class="footer_headings">Bookings</h5>
+                              <hr>
+                              <ul  style="list-style-type:none;">
+                                <li>xxxxx</li>
+                                <li>xxxxx</li>
+                              </ul>
+                            </div>
+                            <div class="col mt-3">
+                              <h5 class="footer_headings">Shop</h5>
+                              <hr>
+                              <ul  style="list-style-type:none;">
+                                <li>xxxxx</li>
+                                <li>xxxxx</li>
+                              </ul>
+                            </div>
+                            <div class="col mt-3">
+                              <h5 class="footer_headings">Partner with us</h5>
+                              <hr>
+                              <ul  style="list-style-type:none;">
+                                <li>Sell</li>
+                                <li>Advertise</li>
+                              </ul>
+                            </div>
+                            <div class="col mt-3">
+                              <h5 class="footer_headings">About Curls Korner</h5>
+                              <hr>
+                              <ul  style="list-style-type:none;">
+                                <li>Our Mission</li>
+                                <li>Explore</li>
+                                <li>Find Us</li>
+                                <li>Privacy Policy</li>
+                              </ul>
+                            </div>
+                            <div class="col mt-3">
+                              <h5 class="footer_headings">Contact Us</h5>
+                                <hr>
+                                <ul style="list-style-type:none;">
+                                    <li>info@ck.com</li>
+                                    <li>xxxxxxxxxxxx</li>
+                                    <li>xxxxx</li>
+                                </ul>
+                            </div>
+                          </div>
+                  
+                          <!--Footer with copyright-->
+                          <div class="row" id="footer">
+                            <div class="col-12 text-center">
+                              <p>&copy; 2022 Designed and Developed by Beatrice Pepple </p>
+                          </div>
+                          </div>
+            </div>
+        </div>
+    </div>
+
+<!-- JS Files-->
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.js')}}" type="text/javascript"></script>
+<!-- jQuery file -->
+<script src="{{url_for('static',filename='js/jquery.min.js')}}" type="text/javascript"></script>
+<!--External js-->
+<script src="{{url_for('static',filename='js/index.js')}}" type="text/javascript" language="javascript"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends "homelayout.html" %}
+{% block banner %}
+<div class="row mb-5">
+    <div class="col" >
+        <section style="background-color: #28262c; height: 150px; color:#E2CCFF" class="d-flex align-items-center justify-content-evenly" >
+            <h2>All Hair Products</h2>    
+        </section>
+    </div>
+</div>
+{% endblock banner %}
+
+{% block content %}
+
+<!--ALL SALONS-->
+<div class="row mb-3 g-3">
+    {% for v in allprods %}
+    <div class="col-md-3 mx-auto">
+    <div class="card">
+        <div class="img_wrapper">
+        <img src="{{url_for('static', filename='uploads/products/'+v.prod_pic)}}" alt="product image">
+        </div>
+        <div class="card-body">
+        <h6 class="card-title">{{ v.prod_name}}</h6>
+        <p class="card-text">{{v.prod_desc[0:25]}}</p>
+        <p class="card-text">{{v.prod_amt}}</p>
+        </div>
+        <div class="card-footer text-end">
+        <a href="{{url_for('view_product', id=v.prod_id)}}" class="btn-sm btn-outline-dark"> View More</a>
+        <a href="{{url_for('addproduct_tocart', id=v.prod_id)}}" class="btn-sm btn-outline-dark"><i class="fa-solid fa-cart-plus"></i> Add to Cart</a>
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

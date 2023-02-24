@@ -1,0 +1,49 @@
+{% extends "homelayout.html" %}
+{% block banner %}
+{% endblock banner %}
+
+{% block content %}
+      <div class="row mt-2 mb-5">
+          <div class="col-md-7 mx-auto">
+            <h3>Contact Us</h3>
+            {% with c = get_flashed_messages() %}
+        {% for msg in c %}
+          <p class="alert alert-success">{{ msg }}</p>
+        {% endfor %}
+      {% endwith %}
+            <form action="" method="get" class="mt-4" novalidate>
+                
+                <div class="row form-group mb-3">
+                    {{contact.csrf_token}}
+                    {{contact.email.label(class_='col-md-2')}}
+                    <div class="col-md-6">
+                        {{contact.email(class_='form-control')}}
+                        <!-- THis is to display the error msg -->
+                        {% if contact.email.errors %}
+                            {% for err_email in contact.email.errors %}
+                                <span class="text-danger">{{ err_email}}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row form-group mb-3">
+                    {{contact.message.label(class_='col-md-2')}}
+                    <div class="col-md-6">
+                        {{contact.message(class_='form-control')}}
+
+                        {% if contact.message.errors %}
+                            {% for err_message in contact.message.errors %}
+                                <span class="text-danger">{{ err_message}}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row form-group mb-5 text-end">
+                    <div class="col-md-6">
+                        {{contact.submit(class_='btn btn-info')}}
+                    </div>
+                </div>
+            </form>
+            </div>
+      </div>
+{% endblock content %}

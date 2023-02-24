@@ -1,0 +1,139 @@
+{% extends "homelayout.html" %}
+{% block navigation%}
+{% endblock %}
+{%block menu%}
+{%endblock menu%}
+{% block banner%}
+{% endblock banner%}
+{% block content %}
+
+
+<div class="row">
+  <div class="col-12 text-center my-5">
+    <h1>Cart</h1>
+  </div>
+</div>
+
+{% if cartdets %}
+<div class="row mb-5" style="min-height: 100px;">
+    {% with m=get_flashed_messages() %}
+            {% if m %}
+        {% for msg in m%}
+        <div class="alert alert-warning">{{ msg }}</div>
+        {% endfor %}
+            {% endif %}
+            {% endwith %}
+    <div class="table-main col-md-12 table-responsive" id="cartTable">
+      
+        <table class="table">
+            <thead>
+                <tr>
+                  <th>Details</th>
+                  <th>Price</th>
+                  <th>QTY</th>
+                  <th >Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+               
+                {% for x in cartdets%}
+                <!-- if statement so that if bookid is available display the default without qty, else if prodid is available d -->
+                {% if x.cartitem_prodid == 0 or x.cartitem_prodid == NULL%}
+                <tr >
+                  <td class="d-flex ">
+                    <div style="width:150px; padding-right: 20px;">
+                        <img src="{{url_for('static', filename='uploads/styles/'+x.itembook.stylepref.venstyle_pic)}}" class="img-thumbnail">
+                    </div>
+                    <div>
+                        <p>Style:<span class="ps-2">{{x.itembook.stylepref.allstyles.style_name}}</span></p>
+                        <p>Date:<span class="ps-2">{{x.itembook.booking_date}}</span></p>
+                        <p>Time:<span class="ps-2">{{x.itembook.booking_time}}</span></p>
+                        <p>Mode:<span class="ps-2">{{x.itembook.booking_type}}</span></p>
+                        <p>Salon:<span class="ps-2">{{x.itembook.stylepref.vendeets.ven_name}}</span></p>
+                    </div>
+                  </td>
+                  <td >{{x.cartitem_price}}</td>
+                  <td ></td>
+                  <td >&#8358 {{x.cartitem_total}}</td>
+                  <td class="text-end">
+                    <a href="{{url_for('removeitem', id=x.cart_id)}}" class="btn"><i class="fa-solid fa-xmark pe-2 "></i></a>
+                  </td>
+                 </tr>
+                 {% else %}
+                <!-- This is for products -->
+                <tr >
+                  <td class="d-flex ">
+                    <div style="width:150px; padding-right: 20px;">
+                        <img src="{{url_for('static', filename='uploads/products/'+x.itemprod.prod_pic)}}" class="img-thumbnail">
+                    </div>
+                    <div>
+                        <p>{{x.itemprod.prod_name}}</p>
+                        <p class="text-muted">Seller<span class="ps-2">{{x.itemprod.thevendor.ven_name}}</span></p>
+                        
+                    </div>
+                  </td>
+                  <td> {{x.cartitem_price}}</td>
+                  <!-- Product QTY -->
+                  <td >
+                    <div class="quantity">
+                      <!-- <div class="col-md-3" id="btnminus"><i class="fa-solid fa-minus"></i></div> -->
+                          <span id="qtyitem" class="text-center">{{x.cartitem_qty}}</span>
+                          <a href="{{url_for('view_product',id=x.cartitem_prodid)}}"><i class="fa-solid fa-plus"></i>Add</a>
+                    </div>
+                    
+                  </td>
+                  <td >&#8358 {{x.cartitem_total}}</td>
+                  <td class="text-end">
+                    <a href="{{url_for('removeitem', id=x.cart_id)}}" class="btn"><i class="fa-solid fa-xmark pe-2 "></i></a>
+                  </td>
+                </tr>
+                
+                {% endif %}
+                {% endfor%}
+                </tbody>
+        </table>
+    </div>
+    <div class="col-12 text-end">   
+            <a href="{{url_for('clearcart')}}" class="btn-sm btn-outline-secondary">Clear Cart</a>
+            <a href="{{url_for('all_products')}}" class="btn-sm btn-outline-secondary">Shop more</a>
+    </div>
+
+    <!-- use ajax. -->
+    <div class="col-12 text-end mt-5 ">
+      <div class="col-auto d-flex justify-content-end">
+        <div>
+          <span>Total:</span>
+        </div>
+        <div style="margin-left: 50px;">
+          <span style="font-size: large;">&#8358 {{total[0]}}</span>
+        </div>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-lg btn-warning my-4">Proceed to Checkout</button>
+      </div>
+      
+      
+    </div>
+</div>
+{% else %}
+<div class="row justify-content-evenly">
+  <div class="col-12 text-center" style="height:200px; background-color: bisque;" >
+    <i class="fa-solid fa-cart-shopping fa-5x my-4 pt-4"></i>
+    <p>Your Cart is Currently Empty</p>
+  </div>
+  <div class="col-auto" >
+      <a href="{{url_for('all_products')}}" class="btn btn-lg btn-dark my-5">Shop Hair Products</a>
+  </div>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+{% block customjs %}
+<script>
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "homelayout.html" %}
+{% block banner%}
+{% endblock %}
+{% block content%}
+<div class="row" style="min-height:400px">
+            <div class="col-md-3">
+                <!--Side bar-->
+                {% include "customer/accountmenu.html"%}
+            </div>
+            <div class="col-md-9">
+              Include Table and display all Bookings
+            </div>
+          </div>
+{% endblock content%}
+
+            

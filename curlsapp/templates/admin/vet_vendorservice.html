@@ -1,0 +1,70 @@
+{% extends "admin/admin_dashboard.html" %}
+      {% block content %}
+<a href="{{url_for('manage_vendors')}}" class="btn"><i class="fa-solid fa-arrow-left-long text-dark pe-2"></i>Back</a>
+
+      <h3 class="text-center mb-3">Vendor Information and Service</h3>
+
+      <div class="d-flex justify-content-evenly ">
+        <div class="col-md-6">
+          <p>Name:</p>
+          <h5>{{vdeet.vendeets.ven_name.capitalize()}}</h5>
+        </div>
+
+        <div class="col-md-6">
+          <p>Salon Picture:</p>
+            <img src="{{url_for('static', filename='uploads/'+vdeet.vendeets.ven_salonpix)}}" width="200">
+        </div>
+        
+      </div>
+      
+      <h4>Service</h4>
+      <div class="table-responsive">
+        <table class="table ">
+          <tbody>
+            <tr>
+              <td>Style Name</td>
+              <td>{{vdeet.allstyles.style_name}}</td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td>
+                  <img src="{{url_for('static', filename='uploads/styles/'+vdeet.venstyle_pic)}}" width="200">
+                </td>
+            </tr>
+            <tr>
+                <td>Video</td>
+                <td>
+                  <div class="ratio ratio-4x3" style="width:300px">
+                    <video controls>
+                        <source src="{{url_for('static', filename='uploads/styles/'+vdeet.venstyle_vid)}}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Amount</td>
+                <td>{{vdeet.venstyle_amt}}</td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td>{{vdeet.venstyle_desc}}</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <form method="post" action="/admin/update_venstatus">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+        <p>
+            <input type="hidden" name="styleid" value="{{vdeet.ven_styleid}}">
+            <label>Select Action</label>
+            <select name="status" class="form-select">
+                <option value="">select</option>
+                <option value="1">Publish</option>
+                <option value="0">Unpublish</option>
+            </select>
+        </p>
+        <p class="text-end"><button class="btn btn-warning">Submit</button></p>
+    </form>
+      {% endblock %}

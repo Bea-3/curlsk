@@ -1,0 +1,29 @@
+
+                <!--Side bar-->
+                <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px;" id="sidebar">
+                <ul class="nav nav-pills flex-column mb-auto">
+                  <li class="nav-item">
+                    <a href="{{url_for('cust_bookings')}}" class="nav-link " aria-current="page">
+                      
+                      My Bookings
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{url_for('cust_orders')}}" class="nav-link ">
+                      
+                      My Orders
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{url_for('cust_profile')}}" class="nav-link ">
+                      
+                      My Profile
+                    </a>
+                  </li>
+                  
+                </ul>
+                <hr>
+                <a class="btn btn-outline-dark" href="{{url_for('cust_logout')}}">Logout</a>
+              </div>
+ 
+            

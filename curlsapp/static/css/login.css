@@ -1,0 +1,13 @@
+.loginform{
+    width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.newaccount{
+    margin-top: 10px;
+    border-top:1px solid grey;
+}
+.registerform{
+  margin: auto;
+}

@@ -1,0 +1,66 @@
+{% extends "homelayout.html" %}
+{% block navigation%}
+{% endblock %}
+{%block menu%}
+{%endblock menu%}
+{% block banner%}
+{% endblock banner%}
+{% block content %}
+<div class="row">
+    <!-- Book Services-->
+    <div class="col-7" style="margin:auto">
+        <h2 class="m-4 ">Book Session with {{vstyle.vendeets.ven_name.capitalize()}}</h2>
+
+        <form class="row p-3 g-3 border rounded-3 bg-light" action="" method="post">
+           <h5 class="mt-4 ">Please complete the form and confirm the booking details</h5>
+                    {% with m=get_flashed_messages() %}
+                    {% if m %}
+                {% for msg in m%}
+                <div class="alert alert-danger">{{ msg }}</div>
+                {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+
+           <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+            <div class="col-6">
+                <label class="form-label">Service Selected:</label>
+                <div>
+                    <p class="border border-secondary ps-2">{{vstyle.allstyles.style_name}}</p>
+                </div>
+                
+            </div>
+            <div class="col-6">
+                <label class="form-label">Amount:</label>
+                <div>
+                    <p class="border border-secondary ps-2">{{vstyle.venstyle_amt}}</p>
+                </div>
+            </div>
+            <div class="col-6">
+                <label class="form-label ">Choose Date:</label>
+                <input type="date" name="date" class="form-control border-info">
+            </div>
+            <div class="col-6">
+                <label class="form-label">Choose Time:</label>
+                <input type="time" name="time" class="form-control border-info" >
+            </div>
+            <div class="col-6">
+                <label class="form-label">Select Service type:</label>
+                <select name="service_type" class="form-select border-info">
+                    <option value="">Select type</option>
+                    <option value="salon visit">Salon Visit</option>   
+                    <option value="home service">Home Service</option>
+                </select>
+            </div>
+            <div class="col-12 my-5 d-flex justify-content-evenly">
+                <a class="btn btn-danger w-40"href="/index/salon/{{vstyle.vendeets.ven_id}}">Make a change</a>
+                <button type="submit" class="btn btn-success w-40">Confirm Booking</button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+
+{% endblock %}
+{% block footer%}
+{% endblock%}

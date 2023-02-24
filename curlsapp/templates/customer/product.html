@@ -1,0 +1,123 @@
+{% extends "homelayout.html" %}
+{% block banner%}
+{% endblock banner %}
+{% block content %}
+<div class="row mt-3 g-3 mb-3">
+    
+    <div class="col-md-6">
+        <div class="product-img">
+            <img src="{{url_for('static',filename='uploads/products/'+prod.prod_pic)}}" alt="...">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="product-details">
+            <h3>{{prod.prod_name}}</h3>
+            <h5 class="my-4 pe-3 text-end">&#8358 {{prod.prod_amt}}</h5>
+            
+            <p>{{prod.prod_desc}}</p>
+            <p>Sold by: {{prod.thevendor.ven_name}}</p>
+            <p>QTY<span class="ps-3 text-center">
+                <button  type="button" id="minus" class="border-0"><i class="fa-solid fa-minus"></i></button>
+        
+                <input type="number" min="0" max="10" name="cartqty" value="{{cartitem.cartitem_qty}}" id="cartqty" class="text-center">
+               
+                <button type="button" id="plus" class="border-0"><i class="fa-solid fa-plus"></i></button>
+            </span></p>
+            {% if custdeets != None%}
+            <button class="btn btn-sm col-12 btn-warning my-4" id="cartbtn">Add to Cart</button>
+            {% else %}
+            <a href="{{url_for('login')}}" class="btn btn-sm col-12 btn-warning my-4">Login in to Purchase</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% if vprods: %}
+<h3>View More Products From {{prod.thevendor.ven_name}}</h3>
+<div class="row g-3 mb-4 mt-3">
+    {% for v in vprods %}
+    {#{% if v.prod_id == prod%}#}
+    {#{% continue %}#}
+    {#{% else %}#}
+    <div class="col-md-3 mx-auto">
+        <div class="card">
+            <div class="img_wrapper">
+            <img src="{{url_for('static', filename='uploads/products/'+v.prod_pic)}}" alt="product image">
+            </div>
+            <div class="card-body">
+            <h6 class="card-title">{{ v.prod_name}}</h6>
+            <p class="card-text">{{v.prod_desc[0:25]}}</p>
+            <p class="card-text">{{v.prod_amt}}</p>
+            </div>
+            <div class="card-footer text-end">
+            <a href="{{url_for('view_product', id=v.prod_id)}}" class="btn-sm btn-outline-dark"> View More</a>
+            <a href="{#{url_for('addproduct_tocart', id=prod.prod_id)}#}" class="btn-sm btn-outline-dark"><i class="fa-solid fa-cart-plus"></i> Add to Cart</a>
+            </div>
+        </div>
+        </div>
+        {#{% endif %}#}
+    {% endfor %}
+</div>
+{% else %}
+<div class="col text-center my-5">
+<a href="{{url_for('all_products')}}" class="btn btn-outline-dark">View More Products</a>
+</div>
+{% endif %}
+{% endblock content%}
+{% block customjs %}
+<script>
+    $(document).ready(function(){    
+      var counter = 0
+      $('#plus').click(function(){
+        $('#cartqty').val(counter++);
+        counter = counter + 1
+      })
+      $('#minus').click(function(){
+        if (counter > 0){
+          $('#cartqty').val(counter--);
+          counter--
+        }else{
+          $('#cartqty').val(counter)
+        }
+      })
+    //   var digit = $('#cartqty').val() 
+    //   var counter = 0
+    //   $('#plus').click(function(){
+    //     $('#cartqty').val(digit++)
+    //   })
+    //   $('#minus').click(function(){
+    //     if(digit > 0){
+    //         $('#cartqty').val(digit--) 
+    //     }else{
+    //         digit
+    //     }
+    //   })
+      // make ajax call
+      $('#cartbtn').click(function(){
+        var qty = $('#cartqty').val()
+        var price = "{{prod.prod_amt}}"
+        var prodid = "{{prod.prod_id}}"
+        var total = parseFloat(qty) * parseFloat(price)
+        var data2send = "qty="+qty+"&prodid="+prodid+"&amount="+price+"&total="+total;
+
+        $.ajax({
+        url:"/addproduct_tocart",
+        data:data2send,
+        type:"GET",
+        dataType:"text",
+        beforeSend:function(){
+            $('#cartbtn').html("Adding")
+        },
+        success:function(rsp){
+            console.log(rsp)
+            $('#cartbtn').html("Product Added to cart")
+            $('#cartbtn').addClass("btn btn-success")
+        },
+        error:function(err){
+            console.log(err)
+        }
+      })
+      })  
+    
+    })
+    </script>
+{% endblock %}

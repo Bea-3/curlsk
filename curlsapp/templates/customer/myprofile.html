@@ -1,0 +1,91 @@
+{% extends "homelayout.html" %}
+{% block banner%}
+{% endblock %}
+{% block content%}
+<div class="row mb-5 mt-3" style="min-height:400px">
+            <div class="col-md-3">
+                <!--Side bar-->
+                {% include "customer/accountmenu.html"%}
+            </div>
+            <div class="col-md-9 px-4">
+                <h3>Update Profile</h3>
+                <form class="row g-3 mt-2" action="{{url_for('cust_profile')}}" method="post">
+                  <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+                    {% with m=get_flashed_messages() %}
+                            {% if m %}
+                        {% for msg in m%}
+                        <div class="alert alert-warning">{{ msg }}</div>
+                        {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                    
+                    <div class="col-md-6">
+                        <label for="firstname" class="form-label">First Name</label>
+                        <p>{{cust.cust_fname.capitalize()}}</p>
+                      </div>
+                    <div class="col-md-6">
+                      <label for="lastname" class="form-label">Last Name</label>
+                      <p>{{cust.cust_lname.capitalize()}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <p>{{cust.cust_email}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Phone No</label>
+                        <p>{{cust.cust_phone}}</p>
+                      </div>
+                    <div class="col-12">
+                      <label for="address" class="form-label">Address</label>
+                      <input type="text" class="form-control border-info" name="address" placeholder="1234 Main St" value="{{cust.cust_address}}">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="dob" class="form-label">Date of Birth</label>
+                      <input type="date" class="form-control border-info" name="dob" value="{{cust.cust_dob}}">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="state" class="form-label">State</label>
+                      <select name="state" id="state" class="form-select border-info">
+                        <option>Choose state</option>
+                        {% for s in sdata %}
+                        <option value="{{s.state_id}}">{{s.state_name}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label">L.G.A</label>
+                      <div class="col-auto" id="mylga">
+                
+                      </div>
+                    </div>
+                    
+                    
+                    <div class="col-12 text-end">
+                      <button type="submit" class="btn btn-warning">Update</button>
+                    </div>
+                  </form>
+            </div>
+          </div>
+{% endblock content%}
+{% block customjs %}
+<script type="text/javascript">
+  $(document).ready(function(){
+      $('#state').change(function(){
+          var stateid = $(this).val()
+          $.ajax({
+              url:"/load_lga/"+stateid,  
+              type:"GET",
+              success:function(rsp){
+                  $('#mylga').html(rsp)
+              },
+              error:function(err){
+                  console.log(err)
+              }
+          })
+      })
+  })
+</script>
+
+{% endblock %}
+
+            

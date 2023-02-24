@@ -1,0 +1,8 @@
+{% extends 'baselayout.html' %}
+
+{% block navigation %}
+<div class="col-2">
+    <a class="navbar-brand " href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/imgre.png')}}" class="logo"></a>
+</div>
+{{data}}
+{% endblock %}

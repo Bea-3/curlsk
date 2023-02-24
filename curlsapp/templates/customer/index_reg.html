@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Registration page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootsrtap CSS-->
+    <link href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" >
+    <!-- External CSS -->
+    <link href="{{url_for('static', filename='css/index.css')}}" rel="stylesheet" type="text/css">
+    <!-- fontawesome -->
+	<link href="{{url_for('static', filename='fontawesome/css/all.css')}}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+                <div class="col-7 offset-2 mt-1 text-center">
+                    <a href="{{url_for('homepage')}}"><img src="{{url_for('static',filename='images/imgre.png')}}" width="200" height="100"></a>
+
+
+                    <h5 class="text-muted">Hello There! Create your account</h5>
+                    
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-7 mt-2 p-4" style="margin:auto; border-radius: 10px; background-color: #f5f5f5; ">
+            {% block content %}
+            
+
+              {% endblock %}
+            </div>
+        </div> 
+
+        <hr>
+        <!--Footer-->
+        <div class="row">
+            <div class="col-12 text-center text-muted mt-3">
+              <p>&copy; 2022 Designed and Developed by Beatrice Pepple </p>
+          </div>
+          </div>
+    </div>
+<!-- JS Files-->
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.js')}}" type="text/javascript"></script>
+<!-- jQuery file -->
+<script src="{{url_for('static',filename='js/jquery.min.js')}}" type="text/javascript"></script>
+<!--External js-->
+<script src="{{url_for('static',filename='js/index.js')}}" type="text/javascript" language="javascript"></script>
+    </body>
+</html>

@@ -1,0 +1,33 @@
+{% extends "homelayout.html" %}
+{% block banner %}
+<div class="row mb-5">
+    <div class="col" >
+        <section style="background-color: #28262c; height: 150px; color:#E2CCFF" class="d-flex align-items-center justify-content-evenly" >
+            <h2>View All Salons</h2>    
+        </section>
+    </div>
+</div>
+{% endblock banner %}
+
+{% block content %}
+
+<!--ALL SALONS-->
+<div class="row mb-3 g-3">
+    {% for d in data %}
+    <div class="col-md-3 mx-auto">
+      <div class="card">
+        <div class="img_wrapper">
+          <img src="{{url_for('static', filename='uploads/'+d.ven_salonpix)}}" alt="image of a salon">
+        </div>
+        <div class="card-body">
+          <h6 class="card-title">{{d.ven_name}}</h6>
+          <p class="card-text">{{d.ven_address}}</p>
+        </div>
+        <div class="card-footer text-end">
+          <a href="{{url_for('view_salon',id=d.ven_id)}}" class="btn-sm btn-outline-secondary">View Salon</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

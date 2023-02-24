@@ -1,0 +1,52 @@
+{% extends "vendor/ven_dashboard.html" %}
+{% block content %}
+<a href="{{url_for('ven_products')}}" class="btn"><i class="fa-solid fa-arrow-left-long text-dark pe-2"></i>Back</a>
+
+{% with m=get_flashed_messages() %}
+            {% if m %}
+        {% for msg in m%}
+        <div class="alert alert-success">{{ msg }}</div>
+         {% endfor %}
+            {% endif %}
+            {% endwith %}
+<div class="row p-2">
+    <h4>Add Products</h4>
+    <form class="row g-3" action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+
+        <div class="col-md-6">                
+            <label for="prod_name"class="form-label" >Product Name</label>
+            <input type="text" name="prod_name" class="form-control" id="prod_name">
+        </div>
+        <div class="col-md-3">
+            <label for="prod_amt" class="form-label">Product Amount</label>
+            <input type="text" name="prod_amt" class="form-control" id="prod_amt" placeholder="Product Amount">
+        </div>
+        <div class="col-md-3">
+            <label for="prod_qty" class="form-label">Product QTY</label>
+            <input type="type" name="prod_qty" class="form-control" id="prod_qty" placeholder="QTY">
+        </div>
+        <div class="col-md-6">
+            <label for="prod_cat" class="form-label">Product Category</label>
+            <select class="form-select" aria-label="Product Category" name="prod_cat" id="prod_cat" >
+                <option value="">Choose Category</option>
+                {%for p in data%}
+                <option value="{{p.cat_id}}">{{p.cat_name}}</option>
+                {%endfor%}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="prod_img" class="form-label">Product Image</label>
+            <input type="file" name="prod_img" class="form-control" id="prod_img">
+        </div>
+    
+        <div class="col-12">
+            <label for="prod_desc" class="form-label">Description</label>
+            <textarea class="form-control" name="prod_desc" id="prod_desc" style="height:20vh" placeholder="Type here"></textarea>
+        </div>
+        <div class="col-12 text-end">
+          <button type="submit" class="btn btn-outline-warning">Add Product</button>
+        </div>
+      </form>
+</div>
+{% endblock %}
