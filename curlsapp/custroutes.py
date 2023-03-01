@@ -213,9 +213,29 @@ def checkout():
         db.session.add(c_order)
         db.session.commit()
 
-        for x in cartdets:
-            orders = Order_details(order_prodid=x.cartitem_prodid,order_prodqty=x.cartitem_qty,order_bookid=x.itembook.booking_id,order_amt=x.cartitem_price, order_custorderid=c_order.custorder_id)
-        db.session.add(orders)
+        bookid = Bookings.query.filter(Bookings.booking_custid==custid).order_by(Bookings.booking_id.desc()).first()
+
+        order_items =[]
+        for y in cartdets:
+            product = y.cartitem_prodid
+            qty = y.cartitem_qty
+            book = bookid.booking_id
+            amount = y.cartitem_price
+            if product == 0:
+                orders = Order_details(order_prodid='', order_prodqty=qty,order_bookid=book, order_amt=amount,order_custorderid=c_order.custorder_id)
+                order_items.append(orders)
+            else:
+                orders = Order_details(order_prodid=product, order_prodqty=qty,order_bookid='', order_amt=amount,order_custorderid=c_order.custorder_id)
+                order_items.append(orders)
+            
+
+
+        # for x in cartdets:
+        #     if x.cartitem_prodid == 0 or x.cartitem_prodid == None:
+        #         orders = Order_details(order_prodid='',order_prodqty=x.cartitem_qty,order_bookid=x.itembook.booking_id,order_amt=x.cartitem_price, order_custorderid=c_order.custorder_id)
+        #     else:
+        #         orders = Order_details(order_prodid=x.cartitem_prodid,order_prodqty='',order_bookid='',order_amt=x.cartitem_price, order_custorderid=c_order.custorder_id)
+        db.session.add_all(order_items)
         db.session.commit()
 
 
