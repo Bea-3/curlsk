@@ -155,3 +155,10 @@ body{
   line-height: 10px;
 
 }
+.checkoutTable table td{
+  vertical-align: middle;
+}
+.orderdets li{
+ margin:5px;
+ padding:5px;
+}

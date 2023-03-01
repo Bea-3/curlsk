@@ -1,0 +1,34 @@
+{% extends "homelayout.html" %}
+{% block navigation%}
+{% endblock %}
+{%block menu%}
+{%endblock menu%}
+{% block banner%}
+{% endblock banner%}
+{% block content %}
+
+
+<div class="row">
+  <div class="col-12 text-center my-5">
+    <h1>Pay for Order</h1>
+  </div>
+  <div class="col-12 ">
+    <ul class="orderdets">
+        <li>Reference No: <b>{{refno}}</b></li>
+        <li>Date: <b>{{formatdate}}</b></li>
+        <li>Total: <b>&#8358 {{custorder.custorder_totalamt}}</b></li>
+        <li>Name: <b>{{custdeets.cust_fname.capitalize()}} {{custdeets.cust_lname.capitalize()}}</b></li>
+        <li>Email: <b>{{custdeets.cust_email}}</b></li>
+    </ul>
+<p>Thank you for your order, please click the <b>Make Payment</b> button below to make payment. You will be redirected to a secure page where you can enter you card details or bank account details.<b>Please, do not close your browser at any point in this process.</b> </p>
+  </div>
+
+  <form method="post" action="/order_pay" class="my-4">
+    <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}"> 
+    <a class="btn btn-lg btn-outline-danger" href="{{url_for('cart')}}">Cancel order and return to cart</a>
+    <button class="btn btn-lg btn-dark ms-4">Make Payment</button>
+</form>
+</div>
+
+
+{% endblock %}

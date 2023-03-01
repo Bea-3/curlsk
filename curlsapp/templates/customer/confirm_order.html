@@ -1,0 +1,29 @@
+{% extends "homelayout.html" %}
+{% block navigation%}
+{% endblock %}
+{%block menu%}
+{%endblock menu%}
+{% block banner%}
+{% endblock banner%}
+{% block content %}
+
+
+<div class="row">
+  <div class="col-12 text-center my-5">
+    <h1>Order Confirmed</h1>
+  </div>
+  <div class="col-12 ">
+    <p>Hello {{custdeets.cust_fname.capitalize()}}</p>
+    <p>This is to confirm that your payment is <b>successful</b> and your Order with Reference No {{refno}} has been confirmed.</p>
+    <p>Please see order details below</p>
+    <p>Date: <b>{{formatdate}}</b></p>
+    <p>Total: <b>&#8358 {{custorder.custorder_totalamt}}</b></p>
+  
+    
+
+    <a href="#" class="btn btn-secondary">View Order History</a>
+  </div>
+</div>
+
+
+{% endblock %}

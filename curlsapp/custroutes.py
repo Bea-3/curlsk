@@ -1,10 +1,12 @@
+import os,random,string,json, requests
 from flask import Flask,render_template,abort,request,flash,redirect,url_for,session
+from datetime import datetime
 from sqlalchemy.sql import text
 from sqlalchemy import desc
 from werkzeug.security import generate_password_hash,check_password_hash
 #import local files
 from curlsapp import app,db
-from curlsapp.models import Customers,Vendors,Lga,State,Messages,Ven_style,Products,Bookings,Cart
+from curlsapp.models import Customers,Vendors,Lga,State,Messages,Ven_style,Products,Bookings,Cart,Customer_orders,Order_details,Payment
 from curlsapp.forms import ContactForm
 
 @app.route('/')
@@ -170,7 +172,7 @@ def cart():
     result = db.session.execute(text(query))
     total = result.fetchone()
     # totalAmt = Cart.query.filter(Cart.cart_userid==custid).first()
-    return render_template('/customer/cart.html',custdeets=custdeets,cartdets=cartdets,total=total)
+    return render_template('customer/cart.html',custdeets=custdeets,cartdets=cartdets,total=total)
 
 
 @app.route('/cart/removeitem/<id>')
@@ -196,6 +198,112 @@ def clearcart():
         # db.session.delete(clearcart)
         db.session.commit()
         return redirect(url_for('cart'))
+
+
+@app.route('/checkout')
+def checkout():
+    custid = session.get('user')
+    custdeets = db.session.query(Customers).get(custid)
+    cartdets = Cart.query.filter(Cart.cart_userid==custid).all()
+    if custid == None:
+        return redirect(url_for('login'))
+    else:
+        totalAmt = db.session.query(db.func.sum(Cart.cartitem_total)).filter(Cart.cart_userid==custid).first()
+        c_order = Customer_orders(custorder_totalamt=totalAmt[0], order_custid=custid)
+        db.session.add(c_order)
+        db.session.commit()
+
+        for x in cartdets:
+            orders = Order_details(order_prodid=x.cartitem_prodid,order_prodqty=x.cartitem_qty,order_bookid=x.itembook.booking_id,order_amt=x.cartitem_price, order_custorderid=c_order.custorder_id)
+        db.session.add(orders)
+        db.session.commit()
+
+
+        session['custorder_id'] = c_order.custorder_id
+        #Generate the ref no and keep in session
+        refno = int(random.random()*100000000)
+        session['reference'] = refno
+        return render_template('customer/checkout.html',custdeets=custdeets,cartdets=cartdets,totalAmt=totalAmt)
+
+@app.route('/order_pay',methods=['GET','POST'])
+def order_pay():
+    custid = session.get('user')
+    custdeets = db.session.query(Customers).get(custid)
+    if custid == None:
+        return redirect(url_for('login'))
+    else:
+        if request.method == "GET":
+            # totalAmt = db.session.query(db.func.sum(Cart.cartitem_total)).filter(Cart.cart_userid==custid).first()
+            custorder = Customer_orders.query.get( session['custorder_id'])
+            date = custorder.custorder_date
+            formatdate = date.strftime('%A, %d %B %Y')
+            return render_template('customer/order_pay.html',custdeets=custdeets,custorder=custorder,formatdate=formatdate,refno=session['reference'])
+        else:
+            pay = Payment(pay_ref = session['reference'],pay_custorderid=session.get('custorder_id'))
+            db.session.add(pay)
+            db.session.commit()
+
+            #details of the order to send to paystack
+            custorder = Customer_orders.query.get( session['custorder_id'])
+            custemail = custorder.thecustorder.cust_email
+            amt = custorder.custorder_totalamt *100
+            headers={"Content-Type": "application/json", "Authorization":"Bearer sk_test_264295ada248947036c4c180892981f219d7e270"}
+            data={"amount":amt, "reference":session['reference'], "email":custemail}
+
+            response = requests.post('https://api.paystack.co/transaction/initialize', headers=headers, data=json.dumps(data))
+            rspjson= json.loads(response.text)
+            if rspjson['status'] == True:
+                rsp = rspjson['data']['authorization_url']
+                return redirect(rsp)
+            else:
+                return redirect('/order_pay')
+
+
+@app.route('/paymentrsp')
+def paymentrsp():
+    refid = session.get('reference')
+    if refid ==None:
+        return redirect('/')
+    else:
+        headers={"Content-Type": "application/json", "Authorization":"Bearer sk_test_264295ada248947036c4c180892981f219d7e270"}
+        verifyurl="https://api.paystack.co/transaction/verify/"+str(refid)
+        response = requests.get(verifyurl, headers=headers)
+        rspjson = json.loads(response.text)
+        if rspjson['status']==True:
+            # by returning the rspjson we can see all the data received from paystack return rspjson
+            pay = db.session.query(Payment).filter(Payment.pay_ref==refid).first()
+            # pay = Payment.query.get_or_404(refid)
+            pay.pay_amt=rspjson['data']['amount']
+            pay.pay_status='success'
+            db.session.commit()
+            return redirect(url_for('confirm_order'))
+        else:
+            return "payment was not successful"
+
+@app.route('/confirm_order')
+def confirm_order():
+    #i need to clear the cart as soon as payment is successful, and everything that was in cart should be in the orders and order details.
+    custid = session.get('user')
+    custdeets = db.session.query(Customers).get(custid)
+
+    #clear cart
+    Cart.query.filter_by(cart_userid=custid).delete()
+    db.session.commit()
+
+    custorder = Customer_orders.query.get( session['custorder_id'])
+    custorder.custorder_status='1'
+
+    date = custorder.custorder_date
+    formatdate = date.strftime('%A, %d %B %Y')
+
+    return render_template('customer/confirm_order.html',custdeets=custdeets,custorder=custorder,formatdate=formatdate,refno=session['reference'])
+# At this point, i should link them to their orders in their account so they can see a proper breakdown of their session and order. 
+# Also inform them that they will receive an email from the vendor for delivery..or pick up when they visit the salon.
+
+
+
+
+
 
 
 @app.route('/index/allproducts')

@@ -130,13 +130,16 @@ class Products(db.Model):
 
 class Order_details(db.Model):
     order_id=db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    order_prodid=db.Column(db.Integer(),db.ForeignKey('products.prod_id'), nullable=False)
+    order_prodid=db.Column(db.Integer(),db.ForeignKey('products.prod_id'), nullable=True)
     order_prodqty=db.Column(db.Integer(),nullable=True)
-    order_bookid=db.Column(db.Integer(),db.ForeignKey('bookings.booking_id'), nullable=False)
+    order_bookid=db.Column(db.Integer(),db.ForeignKey('bookings.booking_id'), nullable=True)
     order_amt=db.Column(db.Float,nullable=True)
+    order_custorderid = db.Column(db.Integer(),db.ForeignKey('customer_orders.custorder_id'), nullable=True)
     #set relationships
     prodets=db.relationship('Products',back_populates='orderlink')
     bookinglink=db.relationship('Bookings',back_populates='theorderdet')
+    custorder = db.relationship('Customer_orders',back_populates='orderitem')
+
 
 
 class Customer_orders(db.Model):
@@ -144,8 +147,10 @@ class Customer_orders(db.Model):
     custorder_date=db.Column(db.DateTime(),default=datetime.utcnow)
     custorder_totalamt=db.Column(db.Float,nullable=True)
     custorder_status=db.Column(db.Enum('1','0'),nullable=False,server_default=("0"))
+    # 1 = confirmed ,0 = pending
     order_custid=db.Column(db.Integer(),db.ForeignKey('customers.cust_id'), nullable=False)
     #the relationship
+    orderitem = db.relationship('Order_details', back_populates='custorder')
     thecustorder=db.relationship('Customers',back_populates='myorders')
     paydeets=db.relationship('Payment',back_populates='odetails')
 
@@ -155,7 +160,7 @@ class Payment(db.Model):
     pay_amt=db.Column(db.Float,nullable=True)
     pay_status=db.Column(db.Enum('success','pending','failed'),nullable=False,server_default=("pending"))
     pay_date=db.Column(db.DateTime(),default=datetime.utcnow)
-    pay_custorderid=db.Column(db.Integer(),db.ForeignKey('customer_orders.custorder_id'), nullable=False)
+    pay_custorderid=db.Column(db.Integer(),db.ForeignKey('customer_orders.custorder_id'), nullable=True)
     #the relationship
     odetails = db.relationship('Customer_orders',back_populates='paydeets')
 
