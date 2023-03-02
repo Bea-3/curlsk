@@ -19,11 +19,76 @@ div{
 .carousel-item{
   height:500px;
 }
-/* .carousel-item img{
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-} */
+#banner1{
+  height:inherit;
+  background-image: url('../images/afrocurl.jpg');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: whitesmoke;
+  display: flex;
+  justify-items: center;
+}
+.caption1{
+  padding:10px;
+  align-self: center;
+}
+#banner2{
+  height:inherit;
+  background-image: url('../images/afroman.jpg');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: whitesmoke;
+  display: flex;
+  justify-items: center;
+}
+.caption2{
+  padding:10px;
+  align-self: center;
+}
+#banner3{
+  height:inherit;
+  background-image: url('../images/toolsbanner.jpg');
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: whitesmoke;
+  display: flex;
+  justify-items: center;
+}
+.caption3{
+  padding:10px;
+  align-self:center;
+}
+.content{
+  font-size:3.438rem;
+
+}
+.content2{
+  font-size: 3rem;
+
+}
+#salonbg{
+  /* background-image: url('../images/shampoo.jpg') right no-repeat; */
+  /* <img src="{{url_for('static', filename='images/shampoo.jpg')}}" class="d-block w-100" alt="..."> */
+  background-image: linear-gradient(rgb(0, 0, 0,0.2),rgb(0, 0, 0,0.2)),url('../images/testsalon.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #99feff;
+  display: flex;
+  justify-items: center;
+}
+.inner_caption{
+  padding:10px;
+  align-self: center;
+  /* color: rgb(226, 204, 255); */
+  /* background-color: #131313; */
+  background-color:rgb(255, 255, 255,0.6) ;
+  /* background-color:rgb(226, 204, 255,0.5) */
+}
+
 .menubar{
   background-color: #b983ff;
 }
