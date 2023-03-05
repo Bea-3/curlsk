@@ -12,11 +12,13 @@ from curlsapp.forms import ContactForm
 @app.route('/')
 def homepage():
     info=db.session.query(Vendors).all()
-    prods = Products.query.all()
+    prods = Products.query.limit(4).all()
     custid = session.get('user')
     custdeets = db.session.query(Customers).get(custid)
     cartdets = Cart.query.filter(Cart.cart_userid==custid).all()
     return render_template('customer/index.html',info=info,prods=prods,custdeets=custdeets,cartdets=cartdets)
+
+# using ajax to display the cart total.
 
 @app.route('/register/', methods=['GET','POST'])
 def register():
@@ -44,6 +46,20 @@ def register():
         else:
             flash("Please complete all fields")
             return redirect('/register/')
+        
+@app.route('/checkemail',methods=['GET','POST'])
+def checkemail():
+    if request.method == "GET":
+        return "Kindly complete the form and input valid details"
+    else:
+        chkemail = request.form.get('email')
+        custinfo = Customers.query.filter(Customers.cust_email==chkemail).first()
+        if custinfo == None:
+            rsp = {'status':1, 'message':'Email is available, please proceed'}
+            return json.dumps(rsp)
+        else:
+            rsp = {'status':0, 'message':'Email already exists, kindly Login'}
+            return json.dumps(rsp)
 
 @app.route('/index/login',methods=['POST','GET'])
 def login():
@@ -68,12 +84,40 @@ def login():
         else:
             return redirect(url_for('login'))
 
+@app.route('/reset_custpassword',methods=['POST','GET'])
+def reset_custpwd():
+    if request.method == "GET":
+        return render_template('customer/resetpwd.html')
+    else:
+        email=request.form.get('email')
+        newpwd = request.form.get('newpwd')
+        confirmpwd = request.form.get('confirmpwd')
+        # retrieve the data, check if the email supplied is their own email, if it isnt, pass a feedback. then check if the newpwd matches the confirm pwd, else pass feedback. 
+        if email != '' and newpwd !='' and confirmpwd != '':
+            custinfo = Customers.query.filter(Customers.cust_email==email).first()
+            if custinfo != None:
+                if newpwd == confirmpwd:
+                    hashedpwd = generate_password_hash(newpwd)
+                    custinfo.cust_pwd=hashedpwd
+                    db.session.commit()
+                    return redirect(url_for('login'))
+                else:
+                    flash('Passwords must match')
+                    return redirect(url_for('reset_custpwd'))
+            else:
+                flash("Invalid Email")
+                return redirect(url_for('reset_custpwd'))
+        else:
+            flash('Please complete all fields')
+            return redirect(url_for('reset_custpwd')) 
+
 @app.route('/login/account/')
 def account():
     if session.get('user') !=None:
         custid = session.get('user')
         custdeets = db.session.query(Customers).get(custid)
-        return render_template('customer/account.html',custdeets=custdeets)
+        cartdets = Cart.query.filter(Cart.cart_userid==custid).all()
+        return render_template('customer/account.html',custdeets=custdeets, cartdets=cartdets)
     else:
         return redirect(url_for('homepage'))
 
@@ -88,7 +132,8 @@ def all_salons():
     data=db.session.query(Vendors).all()
     custid = session.get('user')
     custdeets = db.session.query(Customers).get(custid)
-    return render_template("customer/allsalons.html",data=data,custdeets=custdeets)
+    cartdets = Cart.query.filter(Cart.cart_userid==custid).all()
+    return render_template("customer/allsalons.html",data=data,custdeets=custdeets,cartdets=cartdets)
 
 @app.route('/index/salon/<id>')
 def view_salon(id):
@@ -96,7 +141,8 @@ def view_salon(id):
     vstyle =db.session.query(Ven_style).filter(Ven_style.venstyle_vendorid==id).all()
     custid = session.get('user')
     custdeets = db.session.query(Customers).get(custid)
-    return render_template('customer/salon.html',data=data,vstyle=vstyle,custdeets=custdeets)
+    cartdets = Cart.query.filter(Cart.cart_userid==custid).all()
+    return render_template('customer/salon.html',data=data,vstyle=vstyle,custdeets=custdeets,cartdets=cartdets)
 
 @app.route('/salon/booknow/<vsid>', methods=["GET", "POST"])
 def book_salon(vsid):
@@ -146,12 +192,11 @@ def addproduct_tocart():
         amt = request.args.get('amount')
         total = request.args.get('total')
 
-        item = Cart.query.filter(Cart.cartitem_prodid==prodid).first()
+        item = Cart.query.filter(Cart.cartitem_prodid==prodid,Cart.cart_userid==custid).first()
         if item:
             item.cartitem_price=amt
             item.cartitem_qty=qty
             item.cartitem_total=total
-            item.cart_userid=custid
             db.session.commit()
             return redirect(url_for('view_product',id=prodid))
         else:
@@ -213,30 +258,34 @@ def checkout():
         db.session.add(c_order)
         db.session.commit()
 
-        bookid = Bookings.query.filter(Bookings.booking_custid==custid).order_by(Bookings.booking_id.desc()).first()
+        # bookid = Bookings.query.filter(Bookings.booking_custid==custid).order_by(Bookings.booking_id.desc()).first()
 
-        order_items =[]
-        for y in cartdets:
-            product = y.cartitem_prodid
-            qty = y.cartitem_qty
-            book = bookid.booking_id
-            amount = y.cartitem_price
-            if product == 0:
-                orders = Order_details(order_prodid='', order_prodqty=qty,order_bookid=book, order_amt=amount,order_custorderid=c_order.custorder_id)
-                order_items.append(orders)
-            else:
-                orders = Order_details(order_prodid=product, order_prodqty=qty,order_bookid='', order_amt=amount,order_custorderid=c_order.custorder_id)
-                order_items.append(orders)
+        # order_items =[]
+        # for y in cartdets:
+        #     product = y.cartitem_prodid
+        #     qty = y.cartitem_qty
+        #     book = bookid.booking_id
+        #     amount = y.cartitem_price
+        #     if product == 0:
+        #         orders = Order_details(order_prodid='', order_prodqty=qty,order_bookid=book, order_amt=amount,order_custorderid=c_order.custorder_id)
+        #         order_items.append(orders)
+        #     else:
+        #         orders = Order_details(order_prodid=product, order_prodqty=qty,order_bookid='', order_amt=amount,order_custorderid=c_order.custorder_id)
+        #         order_items.append(orders)
             
-
+        # cart = Cart.query.filter(Cart.cart_userid==session.get('user'))
+        # for x in cart:
+        #     orders = Order_details(order_prodid=x.cartitem_prodid,order_prodqty=x.cartitem_qty,order_bookid=x.cartitem_bookid,order_amt=x.cartitem_price, order_custorderid=c_order.custorder_id)
+        #     db.session.add(orders)
+        #     db.session.commit()
 
         # for x in cartdets:
         #     if x.cartitem_prodid == 0 or x.cartitem_prodid == None:
         #         orders = Order_details(order_prodid='',order_prodqty=x.cartitem_qty,order_bookid=x.itembook.booking_id,order_amt=x.cartitem_price, order_custorderid=c_order.custorder_id)
         #     else:
         #         orders = Order_details(order_prodid=x.cartitem_prodid,order_prodqty='',order_bookid='',order_amt=x.cartitem_price, order_custorderid=c_order.custorder_id)
-        db.session.add_all(order_items)
-        db.session.commit()
+        # db.session.add_all(order_items)
+        # db.session.commit()
 
 
         session['custorder_id'] = c_order.custorder_id
@@ -331,7 +380,8 @@ def all_products():
     allprods = Products.query.all()
     custid = session.get('user')
     custdeets = db.session.query(Customers).get(custid)
-    return render_template('customer/allproducts.html',allprods=allprods,custdeets=custdeets)
+    cartdets = Cart.query.filter(Cart.cart_userid==custid).all()
+    return render_template('customer/allproducts.html',allprods=allprods,custdeets=custdeets,cartdets=cartdets)
 
 @app.route('/index/product/<id>')
 def view_product(id):
@@ -370,8 +420,12 @@ def cust_profile():
             ldata=db.session.query(Lga).all()
             sdata=db.session.query(State).all()
             custdeets = db.session.query(Customers).get(id)
-            return render_template('customer/myprofile.html',cust=cust,ldata=ldata,sdata=sdata,custdeets=custdeets)
+            cartdets = Cart.query.filter(Cart.cart_userid==custid).all()
+            return render_template('customer/myprofile.html',cust=cust,ldata=ldata,sdata=sdata,custdeets=custdeets, cartdets=cartdets)
         else:
+            fname=request.form.get('fname')
+            lname=request.form.get('lname')
+            phone=request.form.get('phone')
             dob=request.form.get('dob')
             address=request.form.get('address')
             lga=request.form.get('lga')
@@ -379,6 +433,9 @@ def cust_profile():
             if dob != '' and address !='' and lga !='' and state !='':
                 #query an object of Customers,get id, assign attributes, commit
                 custobj=db.session.query(Customers).get(id)
+                custobj.cust_fname=fname
+                custobj.cust_lname=lname
+                custobj.cust_phone=phone
                 custobj.cust_dob=dob
                 custobj.cust_address=address
                 custobj.cust_lgaid=lga
@@ -425,7 +482,20 @@ def contactus():
             return render_template('customer/contactus.html',contact=contact)
 
 
+#Error Pages
+@app.errorhandler(404)
+def pagenotfound(error):
+    custid = session.get('user')
+    cartdets = Cart.query.filter(Cart.cart_userid==custid).all()
+    custdeets = db.session.query(Customers).get(custid)
+    return render_template('errors/error404.html',error=error,cartdets=cartdets,custdeets=custdeets),404
 
+@app.errorhandler(500)
+def internalserver(error):
+    custid = session.get('user')
+    cartdets = Cart.query.filter(Cart.cart_userid==custid).all()
+    custdeets = db.session.query(Customers).get(custid)
+    return render_template('errors/error500.html',error=error,cartdets=cartdets,custdeets=custdeets),500
 
 #layouts
 # @app.route('/base')

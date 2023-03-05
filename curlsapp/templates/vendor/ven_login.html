@@ -14,6 +14,7 @@
         <div class="container">
             <div class="row">
                 <div class="col loginform text-center mt-4">
+                    {% block content %}
                     <a href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/imgre.png')}}" width="200" height="100"></a>
 
                     <form action="" method="post">
@@ -29,12 +30,13 @@
                             <label for="vlogin_email" >Email address</label>
                         </div>
 
-                        <div class="col form-floating mb-3 ">
+                        <div class="col form-floating mb-1 ">
                             <input type="password" name="vlogin_pwd" id="vlogin_pwd" class="form-control" placeholder="Password">
                             <label for="vlogin_pwd">Password</label>
                         </div>
+                        <small class="mb-3"><a href="{{url_for('reset_venpwd')}}">Forgot password?</a></small>
 
-                        <div class="col mb-3">
+                        <div class="col my-3">
                             <button class="btn btn-warning w-100" type="submit">Login</button>
                         </div>
                     </form>
@@ -42,7 +44,7 @@
                     <div class="newaccount mt-5">
                         <p>Don't have an account? <a href="{{url_for('ven_signuppage')}}" class="text-primary">Register</a></p>
                     </div>
-                    
+                    {% endblock %}
                 </div>
             </div>
         </div>

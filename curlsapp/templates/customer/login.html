@@ -29,12 +29,13 @@
                             <label for="login_email" >Email address</label>
                         </div>
 
-                        <div class="col form-floating mb-3 ">
+                        <div class="col form-floating mb-1 ">
                             <input type="password" name="login_pwd" id="login_pwd" class="form-control" placeholder="Password">
                             <label for="login_pwd">Password</label>
                         </div>
+                        <small class="mb-3"><a href="{{url_for('reset_custpwd')}}">Forgot password?</a></small>
 
-                        <div class="col mb-3">
+                        <div class="col my-3">
                             <button class="btn btn-secondary w-100" type="submit">Login</button>
                         </div>
                     </form>

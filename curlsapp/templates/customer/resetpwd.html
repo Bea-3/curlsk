@@ -1,0 +1,35 @@
+{% extends "customer/login.html" %}
+                {% block content %}
+                <div class="col loginform text-center mt-4">
+                    <a href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/imgre.png')}}" width="200" height="100"></a>
+
+                    <form action="" method="post">
+                        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+                        {%with c=get_flashed_messages()%}
+                            {% for msg in c%}
+                               <p class="alert alert-danger"> {{msg}}</p>
+                            {% endfor %}
+                        {% endwith %}
+                        <div class="col form-floating mt-2 mb-3">
+                            <input type="email" name="email" class="form-control" placeholder="Email address" id="email">
+                            <label for="email" >Email address</label>
+                        </div>
+
+                        <div class="col form-floating mb-3 ">
+                            <input type="password" name="newpwd" id="newpwd" class="form-control" placeholder="New Password">
+                            <label for="newpwd">New Password</label>
+                        </div>
+
+
+                        <div class="col form-floating mb-3 ">
+                            <input type="password" name="confirmpwd" id="confirmpwd" class="form-control" placeholder="Confirm Password">
+                            <label for="confirmpwd">Confirm Password</label>
+                        </div>
+
+                        <div class="col mb-3">
+                            <button class="btn btn-success w-100" type="submit">Reset</button>
+                        </div>
+                    </form>
+
+                </div>
+                {% endblock content %}

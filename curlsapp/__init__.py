@@ -11,4 +11,4 @@ app.config.from_pyfile('config.py',silent=False)
 db=SQLAlchemy(app)
 
 #load the routes
-from curlsapp import adminroutes,vendorroutes,custroutes,errorroutes
+from curlsapp import adminroutes,vendorroutes,custroutes

@@ -2,6 +2,9 @@
 {% block content %}
 <div class="content" style="padding:3em">
     <h3>My Profile</h3>
+    <article class="d-flex justify-content-end">
+        <img src="{{url_for('static', filename='uploads/'+vdeets.ven_salonpix)}}" width="250" height="175">
+    </article>
     <form action="{{url_for('ven_profile')}}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
         {% with m=get_flashed_messages(with_categories=True) %}
@@ -17,29 +20,29 @@
             {% endwith %}
         <div class="form-group row mb-3">
             <label class="col-md-3">Business Name</label>
-            <div class="col-md-6">{{ vdeets.ven_name}} </div>
+            <div class="col-md-7">{{ vdeets.ven_name}} </div>
         </div>
         <div class="form-group row mb-3">
             <label class="col-md-3">Email</label>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 {{ vdeets.ven_email}}
             </div>
         </div>
         <div class="form-group row mb-3">
             <label class="col-md-3">Phone</label>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <input type="text" value="{{ vdeets.ven_phone}}" class="form-control border-info" name="phone">
             </div>
         </div>
         <div class="form-group row mb-3">
             <label class="col-md-3">Address</label>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <input type="text" value="{{ vdeets.ven_address}}" class="form-control border-info" name="address">
             </div>
         </div>
         <div class="form-group row mb-3">
             <label class="col-md-3">State</label>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <select name="state" id="state" class="form-select border-info">
                     {% for s in sdata %}
                     <option value="{{s.state_id}}">{{s.state_name}}</option>
@@ -49,34 +52,41 @@
         </div>
         <div class="form-group row mb-3">
             <label class="col-md-3">L.G.A</label>
-            <div class="col-md-6" id="venlga">
+            <div class="col-md-7" id="venlga">
                 
                 
             </div>
+            <div class="col-md-2">
+                <span>{{vdeets.thelgas.lga_name}}</span>
+            </div>
+            
         </div>
         
         <div class="form-group row mb-3">
             <label class="col-md-3">Business Description</label>
-            <div class="col-md-6">
-                <textarea class="form-control border-info" rows="4" name="description" value="{{vdeets.ven_workdesc}}"></textarea>
+            <div class="col-md-7">
+                <textarea class="form-control border-info" rows="4" name="description" placeholder="{{vdeets.ven_workdesc}}" value="{{vdeets.ven_workdesc}}"></textarea>
             </div>
         </div>
         <div class="form-group row mb-3">
             <label class="col-md-3">Social Media Link</label>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <input type="text" value="{{ vdeets.ven_socialmedia}}" class="form-control border-info" name="social1" placeholder="https://insta/salon">
             </div>
         </div>
         <div class="form-group row mb-3">
             <label class="col-md-3">Social Media Link 2</label>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <input type="text" value="{{ vdeets.ven_socialmedia2}}" class="form-control border-info" name="social2" placeholder="https://fb/salon">
             </div>
         </div>
         <div class="form-group row mb-3">
             <label class="col-md-3">Picture of Salon</label>
-            <div class="col-md-6">
-                <input type="file" name="salonpix" class="form-control">
+            <div class="col-md-7">
+                <input type="file" name="salonpix" class="form-control" value="{{vdeets.ven_salonpix}}">
+            </div>
+            <div class="col-md-2">
+                <span>{{vdeets.ven_salonpix}}</span>
             </div>
         </div>
         <div class="col-md-9 text-end">

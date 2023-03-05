@@ -9,13 +9,13 @@
 
 
 <div class="row">
-  <div class="col-12 text-center my-5">
+  <div class="col-11 text-center my-4">
     <h1>Cart</h1>
   </div>
 </div>
 
 {% if cartdets %}
-<div class="row mb-5" style="min-height: 100px;">
+<div class="row mb-5 p-5" style="min-height: 100px;">
     {% with m=get_flashed_messages() %}
             {% if m %}
         {% for msg in m%}
@@ -23,7 +23,7 @@
         {% endfor %}
             {% endif %}
             {% endwith %}
-    <div class="table-main col-md-12 table-responsive" id="cartTable">
+    <div class="table-main col-md-11 table-md-responsive" id="cartTable">
       
         <table class="table">
             <thead>
@@ -94,19 +94,19 @@
                 </tbody>
         </table>
     </div>
-    <div class="col-12 text-end">   
+    <div class="col-11 text-end p-5">   
             <a href="{{url_for('clearcart')}}" class="btn-sm btn-outline-secondary">Clear Cart</a>
             <a href="{{url_for('all_products')}}" class="btn-sm btn-outline-secondary">Shop more</a>
     </div>
 
     <!-- use ajax. -->
-    <div class="col-12 text-end mt-5 ">
+    <div class="col-11 text-end mt-3 ">
       <div class="col-auto d-flex justify-content-end">
         <div>
           <span>Total:</span>
         </div>
         <div style="margin-left: 50px;">
-          <span style="font-size: large;">&#8358 {{total[0]}}</span>
+          <span style="font-size: large; font-weight: bold;">&#8358 {{"{0:,.2f}".format(total[0])}}</span>
         </div>
       </div>
       <div class="col-auto">
@@ -117,8 +117,8 @@
     </div>
 </div>
 {% else %}
-<div class="row justify-content-evenly">
-  <div class="col-12 text-center" style="height:200px; background-color: bisque;" >
+<div class="row p-5 justify-content-evenly">
+  <div class="col-11 text-center" style="height:200px; background-color: bisque;" >
     <i class="fa-solid fa-cart-shopping fa-5x my-4 pt-4"></i>
     <p>Your Cart is Currently Empty</p>
   </div>

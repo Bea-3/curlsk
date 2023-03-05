@@ -21,7 +21,7 @@
                 <nav class="navbar navbar-expand-lg" id="navbar">
                     <div class="container-fluid">
                         <div class="col-md-3">
-                            <a class="navbar-brand " href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/imgre.png')}}" width="150" height="80"></a>
+                            <a class="navbar-brand " href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/imgre.png')}}" class="logo"></a>
                         </div>
                         <div class="col-md-6 text-end">
                            <a class="nav-link"  href="{{url_for('ven_login')}}">Have an Account? <i class="fa-solid fa-shop"></i>Login</a>
@@ -48,6 +48,7 @@
                                <p class="alert alert-danger"> {{msg}}</p>
                             {% endfor %}
                         {% endwith %}
+                        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
                       <div class="form-floating mb-2">
                         <input type="text" name="ven_name" class="form-control" id="ven_name" placeholder="Business Name">
                         <label for="ven_name" class="form-label">Business Name</label>
@@ -55,6 +56,7 @@
                       <div class="form-floating mb-2">
                         <input type="email" name="ven_email" class="form-control" id="ven_email" placeholder="Business Email">
                         <label for="ven_email" class="form-label">Business Email</label>
+                        <span id="feedback" class="mt-2"></span>
                       </div>
                       <div class="form-floating mb-2">
                         <input type="password" name="ven_pwd" id="ven_pwd" class="form-control" placeholder="Password">
@@ -74,78 +76,64 @@
         </div>
         <div class="row">
             <div class="col basecol">
-                <div class="row align-items-center" id="newsletter">
-                    <div class="col-3">
-                      <a  href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/12t.png')}}" class="logo"></a>
+                 <!--Pre Footer with Site Links-->
+                 <div class="row justify-content-between" id="pre-footer">
+                  <div class="col-md-4 mt-3 ps-2">
+                    <div class="">
+                      <a  href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/12t.png')}}" class="logofoot"></a>
                     </div>
-                    <div class="col-md-4"><h6>Join Our Mailing List</h6>
-                      <p>Subscribe now and be the first to know about latest salons, product updates, exciting news and announcements.</p>
+                    <div>
+                      <h6>Join Our Mailing List</h6>
+                      <p>Be the first to know about latest salons, product updates, exciting news and announcements.</p>
                     </div>
-                    <div class="col-md-5 ">
-                      <form class="row row-cols-lg-auto g-3 align-items-center">
-                        <label  class="col-form-label" for="subscribe">Email</label>
-                        <div class="col-12">
+                    <div >
+                      <form class="row align-items-center">
+                        <div class="col-10 my-2">
                           <input type="email" class="form-control" name="subscribe" id="subscribe" placeholder="email@example.com">
                         </div>
-                        <div class="col-12">
-                          <button class="btn btn-outline-secondary">Subscribe</button>
+                        <div class="col-10 text-end">
+                          <button class="btn btn-outline-secondary w-100">Subscribe</button>
                         </div>
                       </form>
                     </div>
+                    
                   </div>
-                        <!--Pre Footer with Site Links-->
-                        <div class="row" id="pre-footer">
-                            <div class="col mt-3">
-                              <h5 class="footer_headings">Bookings</h5>
-                              <hr>
-                              <ul  style="list-style-type:none;">
-                                <li>xxxxx</li>
-                                <li>xxxxx</li>
-                              </ul>
-                            </div>
-                            <div class="col mt-3">
-                              <h5 class="footer_headings">Shop</h5>
-                              <hr>
-                              <ul  style="list-style-type:none;">
-                                <li>xxxxx</li>
-                                <li>xxxxx</li>
-                              </ul>
-                            </div>
-                            <div class="col mt-3">
-                              <h5 class="footer_headings">Partner with us</h5>
-                              <hr>
-                              <ul  style="list-style-type:none;">
-                                <li>Sell</li>
-                                <li>Advertise</li>
-                              </ul>
-                            </div>
-                            <div class="col mt-3">
-                              <h5 class="footer_headings">About Curls Korner</h5>
-                              <hr>
-                              <ul  style="list-style-type:none;">
-                                <li>Our Mission</li>
-                                <li>Explore</li>
-                                <li>Find Us</li>
-                                <li>Privacy Policy</li>
-                              </ul>
-                            </div>
-                            <div class="col mt-3">
-                              <h5 class="footer_headings">Contact Us</h5>
-                                <hr>
-                                <ul style="list-style-type:none;">
-                                    <li>info@ck.com</li>
-                                    <li>xxxxxxxxxxxx</li>
-                                    <li>xxxxx</li>
-                                </ul>
-                            </div>
-                          </div>
-                  
-                          <!--Footer with copyright-->
-                          <div class="row" id="footer">
-                            <div class="col-12 text-center">
-                              <p>&copy; 2022 Designed and Developed by Beatrice Pepple </p>
-                          </div>
-                          </div>
+               
+                  <div class="col-md-2 mt-3 footer_headings">
+                    <h5>Partner with us</h5>
+                    <ul class="footlinks">
+                      <li><a href="">Become a vendor</a></li>
+                      <li><a href="">Advertise</a></li>
+                    </ul>
+                  </div>
+                  <div class="col-md-2 mt-3 footer_headings">
+                    <h5>Curls Korner</h5>
+                    <ul  class="footlinks">
+                      <li><a href="">About us</a></li>
+                      <li><a href="">Terms and Conditions</a></li>
+                      <li><a href="">Privacy Policy</a></li>
+                    </ul>
+                  </div>
+                  <div class="col-md-2 mt-3 footer_headings">
+                    <h5 >Contact</h5>
+                      <ul class="footlinks">
+                          <li><a href="{{url_for('contactus')}}"><i class="fa-regular fa-envelope"></i> Message</a></li>
+                          <li><a href=""><i class="fa-brands fa-instagram"></i></a> Instagram</li>
+                          <li><a href=""><i class="fa-brands fa-facebook"></i></a> Facebook</li>
+                          <li><a href=""><i class="fa-brands fa-twitter"></i></a> Twitter</li>
+                      </ul>
+                  </div>
+                </div>
+                  <div class="to_top">
+                    <a href="#navbar" class="btn btn-lg"><i class="fa-solid fa-chevron-up"></i></a>
+                  </div>
+        
+                <!--Footer with copyright-->
+                <div class="row" id="footer">
+                  <div class="col-11 text-center mt-2">
+                    <p>&copy; 2022 Designed and Developed by Beatrice Pepple </p>
+                </div>
+                </div>
             </div>
         </div>
     </div>
@@ -154,6 +142,33 @@
 <script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.js')}}" type="text/javascript"></script>
 <!-- jQuery file -->
 <script src="{{url_for('static',filename='js/jquery.min.js')}}" type="text/javascript"></script>
+<script>
+  $(document).ready(function(){
+      $('#ven_email').change(function(){
+          var venemail = $(this).val()
+          var csrf = '{{csrf_token()}}'
+          var data2send = {"email":venemail, "csrf_token":csrf}
+          // make ajax call here
+          $.ajax({
+              url:"/checkvenemail",
+              data:data2send,
+              type:'POST',
+              dataType:'json',
+              success:function(response){
+                  $('#feedback').html(response['message']) 
+                  if (response['status'] == 1){
+                      $('#feedback').removeClass()        
+                  }else{
+                      $('#feedback').addClass('text-danger')
+                  }    
+              },
+              error:function(err){
+                  console.log(err)
+              }
+          })
+      })
+  })
+</script>
 <!--External js-->
 <script src="{{url_for('static',filename='js/index.js')}}" type="text/javascript" language="javascript"></script>
 </body>

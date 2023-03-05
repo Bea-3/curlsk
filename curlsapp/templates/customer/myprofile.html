@@ -21,11 +21,11 @@
                     
                     <div class="col-md-6">
                         <label for="firstname" class="form-label">First Name</label>
-                        <p>{{cust.cust_fname.capitalize()}}</p>
+                        <input type="text" class="form-control border-info" name="fname" value="{{cust.cust_fname.capitalize()}}">
                       </div>
                     <div class="col-md-6">
                       <label for="lastname" class="form-label">Last Name</label>
-                      <p>{{cust.cust_lname.capitalize()}}</p>
+                      <input type="text" class="form-control border-info" name="lname" value="{{cust.cust_lname.capitalize()}}">
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email</label>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="phone" class="form-label">Phone No</label>
-                        <p>{{cust.cust_phone}}</p>
+                        <input type="text" class="form-control border-info" name="phone" value="{{cust.cust_phone}}">
                       </div>
                     <div class="col-12">
                       <label for="address" class="form-label">Address</label>
@@ -57,6 +57,7 @@
                       <div class="col-auto" id="mylga">
                 
                       </div>
+                      <p>{{cust.lgadeets.lga_name}}</p>
                     </div>
                     
                     

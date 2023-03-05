@@ -5,7 +5,7 @@ class Customers(db.Model):
     cust_id = db.Column(db.Integer, autoincrement=True,primary_key=True)
     cust_fname = db.Column(db.String(100),nullable=False)
     cust_lname = db.Column(db.String(100),nullable=False)
-    cust_email = db.Column(db.String(120)) 
+    cust_email = db.Column(db.String(120),unique=True) 
     cust_pwd = db.Column(db.String(120),nullable=True)
     cust_phone = db.Column(db.String(25),nullable=True)
     cust_dob =db.Column(db.Date(),nullable=True)
@@ -25,7 +25,7 @@ class Vendors(db.Model):
     ven_name = db.Column(db.String(100),nullable=False)
     ven_salonpix=db.Column(db.String(120),nullable=True)
     ven_workdesc =db.Column(db.Text(),nullable=True)
-    ven_email =db.Column(db.String(120))
+    ven_email =db.Column(db.String(120),unique=True)
     ven_pwd=db.Column(db.String(120),nullable=True)
     ven_address=db.Column(db.String(255),nullable=True)
     #foreign keys
@@ -172,7 +172,7 @@ class Cart(db.Model):
     # cartitem should be either booking id or product id. 
     #cart dets will only dislpay the booking info or the product info
     cartitem_price=db.Column(db.Float,nullable=True)
-    cartitem_qty=db.Column(db.Integer(),nullable=False)
+    cartitem_qty=db.Column(db.Integer(),nullable=False,server_default=("1") )
     cartitem_total=db.Column(db.Float,nullable=True)
     cart_userid=db.Column(db.Integer,db.ForeignKey('customers.cust_id'))
     #relationships

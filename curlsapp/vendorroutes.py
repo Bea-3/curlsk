@@ -1,4 +1,4 @@
-import os,random,string
+import os,random,string,json, requests
 #3rd party imports
 from flask import Flask,render_template,request,redirect,flash,session,url_for
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -15,6 +15,20 @@ def generate_name():
 @app.route('/index/vendor')
 def ven_signuppage():
     return render_template('vendor/ven_signuppage.html')
+
+@app.route('/checkvenemail',methods=['GET','POST'])
+def checkvenemail():
+    if request.method == "GET":
+        return "Kindly complete the form and input valid details"
+    else:
+        chkemail = request.form.get('email')
+        veninfo = Vendors.query.filter(Vendors.ven_email==chkemail).first()
+        if veninfo == None:
+            rsp = {'status':1, 'message':'Email is available, please proceed'}
+            return json.dumps(rsp)
+        else:
+            rsp = {'status':0, 'message':'Email already exists, kindly Login'}
+            return json.dumps(rsp)
 
 #letting the registration form submit to the route below as an intermediary to redirect to login or send back to ven page.
 @app.route('/venregister',methods=['POST'])
@@ -61,6 +75,33 @@ def ven_login():
                 return redirect(url_for('ven_login'))
         else:
             return redirect(url_for('ven_login'))
+        
+@app.route('/reset_vendorpassword',methods=['POST','GET'])
+def reset_venpwd():
+    if request.method == "GET":
+        return render_template('vendor/reset_venpwd.html')
+    else:
+        email=request.form.get('vemail')
+        newpwd = request.form.get('vpwd')
+        confirmpwd = request.form.get('vconfirmpwd')
+        # retrieve the data, check if the email supplied is their own email, if it isnt, pass a feedback. then check if the newpwd matches the confirm pwd, else pass feedback. 
+        if email != '' and newpwd !='' and confirmpwd != '':
+            veninfo = Vendors.query.filter(Vendors.ven_email==email).first()
+            if veninfo != None:
+                if newpwd == confirmpwd:
+                    hashedpwd = generate_password_hash(newpwd)
+                    veninfo.ven_pwd=hashedpwd
+                    db.session.commit()
+                    return redirect(url_for('ven_login'))
+                else:
+                    flash('Passwords must match')
+                    return redirect(url_for('reset_venpwd'))
+            else:
+                flash("Invalid Email")
+                return redirect(url_for('reset_venpwd'))
+        else:
+            flash('Please complete all fields')
+            return redirect(url_for('reset_venpwd'))
 
 @app.route('/vendor/dashboard/')
 def ven_dashboard():

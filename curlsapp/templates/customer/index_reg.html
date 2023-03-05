@@ -22,7 +22,7 @@
                 </div>
         </div>
         <div class="row">
-            <div class="col-7 mt-2 p-4" style="margin:auto; border-radius: 10px; background-color: #f5f5f5; ">
+            <div class="col-md-7 mt-2 p-4" style="margin:auto; border-radius: 10px; background-color: #f5f5f5; ">
             {% block content %}
             
 
@@ -38,10 +38,15 @@
           </div>
           </div>
     </div>
-<!-- JS Files-->
-<script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.js')}}" type="text/javascript"></script>
+
 <!-- jQuery file -->
 <script src="{{url_for('static',filename='js/jquery.min.js')}}" type="text/javascript"></script>
+    {% block customjs %}
+
+    {% endblock %}
+<!-- JS Files-->
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.js')}}" type="text/javascript"></script>
+
 <!--External js-->
 <script src="{{url_for('static',filename='js/index.js')}}" type="text/javascript" language="javascript"></script>
     </body>

@@ -2,7 +2,7 @@
 {% block content %}
     {% with c=get_flashed_messages() %}
             {% for msg in c %}
-            <p class="alert alert-warning">{{ msg }}</p>
+            <p class="alert alert-danger">{{ msg }}</p>
             {% endfor %}
         {% endwith %}
     <form class="row g-3 mb-2" action="" method="post">
@@ -18,6 +18,7 @@
         <div class="col-md-6 form-floating">
             <input type="email" name="email" class="form-control" placeholder="Email" id="email">
             <label for="email" class="form-label">Email</label>
+            <span id="feedback" class="mt-2"></span>
         </div>
         <div class="col-md-6 form-floating">
             <input type="text" name="phonenumber" id="phonenumber" class="form-control" placeholder="Phone No.">
@@ -42,3 +43,34 @@
         <p>Already have an account?<a href="{{url_for('login')}}" class="text-primary">Login</a> Here</p>
     </div>
 {% endblock content %}
+
+{% block customjs%}
+<script>
+    // when the document is ready, and when the user has typed on the input field -onchange, get the csrf and email and send as a json data. make an ajax call. in the route /checkemail, when the response comes back, display in a span under the email. if username is available, no color.if it exists, display the text in danger.
+    $(document).ready(function(){
+        $('#email').change(function(){
+            var useremail = $(this).val()
+            var csrf = '{{csrf_token()}}'
+            var data2send = {"email":useremail, "csrf_token":csrf}
+            // make ajax call here
+            $.ajax({
+                url:"/checkemail",
+                data:data2send,
+                type:'POST',
+                dataType:'json',
+                success:function(response){
+                    $('#feedback').html(response['message']) 
+                    if (response['status'] == 1){
+                        $('#feedback').removeClass()        
+                    }else{
+                        $('#feedback').addClass('text-danger')
+                    }    
+                },
+                error:function(err){
+                    console.log(err)
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}

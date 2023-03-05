@@ -1,4 +1,7 @@
-{% include "header.html" %}
+{% extends "homelayout.html" %}
+{% block banner %}
+{% endblock %}
+{% block content %}
 
 <div class="row mb-3">
     <div class="col d-flex align-items-center ">
@@ -16,4 +19,4 @@
         <img src="{{url_for('static',filename='images/error404.png')}}" style="height:400px; width:500px">
     </div>
 </div>
-{% include "footer.html" %}
+{% endblock content %}

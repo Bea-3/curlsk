@@ -76,7 +76,7 @@ div{
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #99feff;
+  background-color: #6f6f6f;
   display: flex;
   justify-items: center;
 }
@@ -88,7 +88,6 @@ div{
   background-color:rgb(255, 255, 255,0.6) ;
   /* background-color:rgb(226, 204, 255,0.5) */
 }
-
 .menubar{
   background-color: #b983ff;
 }
@@ -97,22 +96,44 @@ body{
   background-color: white;
 }
 .logo{
-  width:50%
+  width:9rem;
+  height:4rem;
 }
-.footer_headings{
-  text-align: center;
-}
-#newsletter{
-  /* background-color: rgba(23, 43, 58,1); */
-  background-color: #28262c;
-  /* color:white; */
-  color:#E2CCFF;
-  /* color:black; */
+.logofoot{
+  width:10rem;
+  height:6rem;
+  margin: 2px 2px;
 }
 #pre-footer,#footer{
-  background-color: rgba(40, 38, 44,0.9);
+  /* background-color: rgba(40, 38, 44,0.9); */
   /* color:rgb(226, 204, 255); */
+  background-color: #28262c;
   color:white;
+  margin-left:10px;
+  margin-right: 10px;
+}
+.to_top{
+  position:fixed;
+	bottom:20px;
+	right:20px;
+}
+.to_top a{
+  background-color: #b983ff;
+}
+.footer_headings h5{
+  margin-top: 2rem;
+}
+.footlinks {
+  list-style-type: none;
+  padding:0px;
+  margin:0px;
+}
+.footlinks li a{
+  text-decoration: none;
+  color:white;
+}
+.footlinks li a:hover{
+  color: #efca08;
 }
 
 /* Registration form CSS */
@@ -226,4 +247,88 @@ body{
 .orderdets li{
  margin:5px;
  padding:5px;
+}
+.billinfo{
+  border: 1px solid  #d9d9d9;
+  border-radius: 5px;
+  padding:5px;
+  background-color: #f0f0f0;
+}
+.headingbg{
+  background-color: #28262c;
+  height:140px;
+  color:white;
+  justify-content: space-evenly;
+  /* background: linear-gradient(45deg, rgb(40, 38, 44) 11%, rgb(226, 204, 255) 100%); */
+  /* background: linear-gradient(180deg, rgb(40, 38, 44) 7%, rgb(226, 204, 255) 100%); */
+  background: linear-gradient(-10deg, rgb(40, 38, 44) 7%, rgb(226, 204, 255) 100%);
+}
+.headingbg h1{
+  align-self: center;
+}
+/* Media Query */
+@media only screen and (max-width: 640px){
+.navbar-brand{
+  width: 2rem;
+}
+.logo{
+  width:5rem;
+  height:2.5rem;
+}
+.logofoot{
+  width:6rem;
+  height:3rem;
+}
+.footer_headings{
+  padding-left:30px;
+}
+.content{
+  font-size: large;
+}
+.content2{
+  font-size: large;
+}
+.carousel-item{
+  height:350px;
+}
+#salonbg{
+  height:inherit;
+}
+.inner_caption{
+  padding:5px;
+  position: relative;
+  bottom:-40px;
+}
+#banner1{
+  height:inherit;
+  background-position:top;
+  background-repeat: no-repeat;
+  background-size:500px;
+}
+.caption1{
+  padding:10px;
+  align-self: flex-start;
+  
+}
+#banner2{
+  height:inherit;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: 500px;
+}
+.caption2{
+  padding:5px;
+  position: relative;
+  bottom:-80px;
+}
+#banner3{
+  height:inherit;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.caption3{
+  padding:10px;
+  align-self:first baseline;
+}
 }

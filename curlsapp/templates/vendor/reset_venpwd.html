@@ -1,0 +1,36 @@
+{% extends "vendor/ven_login.html "%}
+{% block content %}
+<div class="col loginform text-center mt-2">
+    <a href="{{url_for('homepage')}}" ><img src="{{url_for('static',filename='images/imgre.png')}}" width="200" height="100"></a>
+
+    <form action="" method="post" >
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+    
+        {%with c=get_flashed_messages()%}
+            {% for msg in c%}
+                <p class="alert alert-danger"> {{msg}}</p>
+            {% endfor %}
+        {% endwith %}
+        <div class="col form-floating mt-4 mb-3">
+            <input type="email" name="vemail" class="form-control" placeholder="Email address" id="vemail">
+            <label for="vemail" >Email address</label>
+        </div>
+
+        <div class="col form-floating mb-3 ">
+            <input type="password" name="vpwd" id="vpwd" class="form-control" placeholder="Password">
+            <label for="vpwd">Password</label>
+        </div>
+       
+        <div class="col form-floating mb-3 ">
+            <input type="password" name="vconfirmpwd" id="vconfirmpwd" class="form-control" placeholder="Password">
+            <label for="vconfirmpwd">Password</label>
+        </div>
+
+        <div class="col my-3">
+            <button class="btn btn-success w-100" type="submit">Reset</button>
+        </div>
+    </form>
+
+   
+</div>
+{% endblock %}
